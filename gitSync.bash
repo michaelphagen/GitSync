@@ -22,7 +22,7 @@ done
 getLists() {
     #if personalToken is specified, use it
     if [ "$#" -gt  2 ]; then
-        curl -sH "Authorization: token $3" "https://api.github.com/search/repositories?q=user:$1" | grep "html_url" | sed -e "s/\"html_url\": \"https:\/\//https:\/\/$3@/" -e 's/",//' -e 's/^ *//g'
+        curl -sH "Authorization: token $3" "https://api.github.com/search/repositories?q=user:$1" | grep "html_url" | grep "/$1/"| sed -e "s/\"html_url\": \"https:\/\//https:\/\/$3@/" -e 's/",//' -e 's/^ *//g'
     else
         curl -s "https://api.github.com/users/$1/repos" | awk '/^ {4}"html_url"/&&$0=$4' FS='"'
     fi
@@ -35,9 +35,7 @@ syncRepos(){
 # Loop through the list and clone or pull each repo into folders by username/repoName
 while read -r line; do
   repoOwner=$(echo "$line" | awk -F/ '{print $(NF-1)}')
-  echo "$repoOwner is owner"
   repoName=$(echo "$line" | awk -F/ '{print $NF}')
-  echo "$repoName is repoName"
   if [ ! -d "$repoOwner" ]; then
     mkdir "$repoOwner"
   fi
@@ -55,12 +53,10 @@ done <<< "$1"
 
 main() {
   if [ "$#" -gt  2 ]; then
-  echo "private key specified"
   list=$(getLists "$1" "$2" "$3")
   echo "$list is list"
   syncRepos "$list"
   else
-  echo "private key not specified"
   list=$(getLists "$1" "$2")
   syncRepos "$list"
   fi
@@ -106,9 +102,3 @@ else
   fi
   exit
 fi
-
-
-
-
-
-
