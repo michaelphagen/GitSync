@@ -54,7 +54,6 @@ done <<< "$1"
 main() {
   if [ "$#" -gt  2 ]; then
   list=$(getLists "$1" "$2" "$3")
-  echo "$list is list"
   syncRepos "$list"
   else
   list=$(getLists "$1" "$2")
@@ -87,19 +86,23 @@ if [[ "$user" == *,* ]]; then
             exit
         else
             IFS=',' read -r -a users <<< "$user"
-            for i in "${!users[@]}"; do
+                for i in "${!users[@]}"; do
                 cd "$localFolder" || exit
-                main "${users[i]}" "$starred" "${tokens[i]}"
+                if [ "$i" -eq 0 ]; then
+                    main "${users[i]}" "$starred" "$personalToken"
+                else
+                    main "${users[i]}" "$starred"
+                fi
             done
             exit
         fi
     else
-    IFS=',' read -r -a users <<< "$user"
-    for i in "${users[@]}"; do
-        cd "$localFolder" || exit
-        main "$i" "$starred"
-    done
-    exit
+        IFS=',' read -r -a users <<< "$user"
+        for i in "${users[@]}"; do
+            cd "$localFolder" || exit
+            main "$i" "$starred"
+        done
+        exit
     fi
 else
   if [ -n "$personalToken" ]; then
