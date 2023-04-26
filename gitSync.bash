@@ -77,13 +77,21 @@ if [[ "$user" == *,* ]]; then
             IFS=',' read -r -a users <<< "$user"
             for i in "${!users[@]}"; do
                 cd "$localFolder" || exit
-                main "${users[i]}" "$starred" "${tokens[i]}"
+                #if there isn't a token for the user, don't use one
+                if [ -z "${tokens[i]}" ]; then
+                    main "${users[i]}" "$starred"
+                else
+                    main "${users[i]}" "$starred" "${tokens[i]}"
+                fi
             done
             exit
         else
-            # Throw error, personalToken must be comma separated if user is comma separated
-            echo "If user is comma separated, personalToken must be comma separated"
-            echo "Usage: $0 [-f localFolder] [-u user] [-p privateKey] [-s starred]" >&2
+            IFS=',' read -r -a users <<< "$user"
+            for i in "${!users[@]}"; do
+                cd "$localFolder" || exit
+                main "${users[i]}" "$starred" "${tokens[i]}"
+            done
+            exit
         fi
     else
     IFS=',' read -r -a users <<< "$user"
