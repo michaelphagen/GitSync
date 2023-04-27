@@ -20,7 +20,7 @@ This script will sync all of the public repositories for a user to a local folde
 This script can be run in a Docker container.  An example `docker run` command and `docker-compose.yaml` file are provided below.
 ### Docker Run
 ```
-docker run -e USER=michaelphagen -e STARRED=-s -e PERSONAL_TOKEN="-p sometokenhere" -e INTERVAL=3600 ghcr.io/michaelphagen/gitsync
+docker run -e USER=michaelphagen -e STARRED=-s -e PERSONAL_TOKEN="-p sometokenhere" -e INTERVAL=3600 -v ./:/app/git ghcr.io/michaelphagen/gitsync:main
 ```
 
 If you do not want to use the -s or -p flags for starred repos or private repos, you can just leave them out of the command entirely (ommitting the whole `-e STARRED=-s` and/or `PERSONAL_TOKEN="-p sometokenhere"`). The INTERVAL flag is the number of seconds between syncs (3600 = 1 hour).
@@ -30,7 +30,7 @@ version: '3.7'
 services:
   GitSync:
     container_name: GitSync
-    image: ghcr.io/michaelphagen/gitsync
+    image: ghcr.io/michaelphagen/gitsync:main
     environment:
       - USER=michaelphagen
       - STARRED=-s
