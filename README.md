@@ -12,7 +12,7 @@ This script will sync all of the public repositories for a user to a local folde
 | Flag | Description | Required | Notes |
 | --- | --- | --- | --- |
 | -u | Github Username | Yes | Multiple usernames can be provided, separated by commas |
-| -l | Local Folder | Yes | Path to the folder you want as the root of the sync. The folder will be created if it does not exist. The folder structure will be as follows: ```/Local Folder/Repository Owner/Repository Name``` |
+| -f | Local Folder | Yes | Path to the folder you want as the root of the sync. The folder will be created if it does not exist. The folder structure will be as follows: ```/Local Folder/Repository Owner/Repository Name``` |
 | -p | Personal Token | No | GitHub Personal Token for the user, will alllow Private Repositories to be cloned, Multiple Personal Tokens can be provided to clone the private repos of multiple comma separated users, and if there is not a Personal Token provided for a user it will just get the Public Repos|
 | -s | Starred Repos | No | Will clone all starred repos for all specified users. You don't need to put anything after -s, just including the flag will clone starred repos |
 
