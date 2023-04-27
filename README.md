@@ -16,3 +16,28 @@ This script will sync all of the public repositories for a user to a local folde
 | -p | Personal Token | No | GitHub Personal Token for the user, will alllow Private Repositories to be cloned, Multiple Personal Tokens can be provided to clone the private repos of multiple comma separated users, and if there is not a Personal Token provided for a user it will just get the Public Repos|
 | -s | Starred Repos | No | Will clone all starred repos for all specified users. You don't need to put anything after -s, just including the flag will clone starred repos |
 
+## Running in Docker
+This script can be run in a Docker container.  An example `docker run` command and `docker-compose.yaml` file are provided below.
+### Docker Run
+```
+docker run -e USER=michaelphagen -e STARRED=-s -e PERSONAL_TOKEN="-p sometokenhere" -e INTERVAL=3600 ghcr.io/michaelphagen/gitsync
+```
+
+If you do not want to use the -s or -p flags for starred repos or private repos, you can just leave them out of the command entirely (ommitting the whole `-e STARRED=-s` and/or `PERSONAL_TOKEN="-p sometokenhere"`). The INTERVAL flag is the number of seconds between syncs (3600 = 1 hour).
+### Docker Compose
+```
+version: '3.7'
+services:
+  GitSync:
+    container_name: GitSync
+    image: ghcr.io/michaelphagen/gitsync
+    environment:
+      - USER=michaelphagen
+      - STARRED=-s
+      - PERSONAL_TOKEN="-p sometokenhere"
+      - INTERVAL=3600
+    restart: unless-stopped
+    volumes:
+      - ./:/app/git
+```
+Same as with the Docker Run command, to remove the -s or -p flags, just remove the whole line for that flag. The INTERVAL flag is the number of seconds between syncs (3600 = 1 hour).
