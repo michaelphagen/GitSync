@@ -24,10 +24,10 @@ getLists() {
     if [ "$#" -gt  2 ]; then
         curl -sH "Authorization: token $3" "https://api.github.com/search/repositories?q=user:$1" | grep "html_url" | grep "/$1/"| sed -e "s/\"html_url\": \"https:\/\//https:\/\/$3@/" -e 's/",//' -e 's/^ *//g'
     else
-        curl -s "https://api.github.com/users/$1/repos" | awk '/^ {4}"html_url"/&&$0=$4' FS='"'
+        curl -s "https://api.github.com/users/$1/repos" | grep "html_url" | grep "/$1/"| sed -e 's/\"html_url\": \"https:\/\//https:\/\//' -e 's/",//' -e 's/^ *//g'
     fi
     if [ "$2" = TRUE ]; then
-        curl -s "https://api.github.com/users/$1/starred" | awk '/^ {4}"html_url"/&&$0=$4' FS='"'
+        curl -s "https://api.github.com/users/$1/starred" | grep "html_url" | sed -e 's/\"html_url\": \"https:\/\//https:\/\//' -e 's/",//' -e 's/^ *//g' | awk -F/ 'NF>4'
     fi
 }
 
