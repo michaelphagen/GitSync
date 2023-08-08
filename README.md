@@ -41,3 +41,9 @@ services:
       - ./:/app/git
 ```
 Same as with the Docker Run command, to remove the -s or -p flags, just remove the whole line for that flag. The INTERVAL flag is the number of seconds between syncs (3600 = 1 hour).
+
+## Donate
+
+If you find this project useful and you would like to donate toward on-going development you can use the link below. Any and all donations are much appreciated!
+
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/michaelphagen)
